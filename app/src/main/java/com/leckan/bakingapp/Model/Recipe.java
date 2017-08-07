@@ -81,6 +81,10 @@ public class Recipe implements Parcelable {
         parcel.writeString(image);
 
     }
+    public Recipe()
+    {
+
+    }
     public Recipe(Parcel parcel) {
         this.id = parcel.readInt();
         this.name = parcel.readString();

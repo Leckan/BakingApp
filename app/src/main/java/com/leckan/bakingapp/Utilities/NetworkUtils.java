@@ -1,5 +1,6 @@
 package com.leckan.bakingapp.Utilities;
 
+import android.net.Uri;
 import android.util.Log;
 
 import java.io.BufferedInputStream;
@@ -18,7 +19,7 @@ import java.net.URL;
 
 public class NetworkUtils {
     private static final String TAG = NetworkUtils.class.getSimpleName();
-
+    private static final String RECIPE_URL = "https://d17h27t6h515a5.cloudfront.net/topher/2017/May/59121517_baking/baking.json";
 
     public static String makeServiceCall(String reqUrl) {
         String response = null;
@@ -61,5 +62,16 @@ public class NetworkUtils {
         }
         return sb.toString();
     }
+    public static URL buildRecipeUrl() {
+        Uri builtUri = Uri.parse(RECIPE_URL);
 
+        URL url = null;
+        try {
+            url = new URL(builtUri.toString());
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
+
+        return url;
+    }
 }

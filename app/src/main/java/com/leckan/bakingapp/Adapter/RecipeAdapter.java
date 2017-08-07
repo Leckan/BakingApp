@@ -41,6 +41,10 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.RecipeView
     public void onBindViewHolder(RecipeViewHolder holder, int position) {
         Recipe recipe = recipeList.get(position);
         holder.viewRecipeName.setText(recipe.getName());
+        if(! recipe.getImage().isEmpty())
+        {
+
+        }
         //URL url = new URL(Uri.parse(recipe.));//NetworkUtils.buildImageUrl(movie.getPoster_path());
       //  Picasso.with(this.inflater.getContext()).load(url.toString()).placeholder(R.drawable.ic_photo)
         // .error(R.drawable.ic_photo)
@@ -66,7 +70,7 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.RecipeView
 
     public class RecipeViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
-        @BindView(R.id.recipe_image)        ImageView listRecipeImageView;
+        //@BindView(R.id.recipe_image)        ImageView listRecipeImageView;
         @BindView(R.id.recipe_name)        TextView viewRecipeName;
         @BindView(R.id.recipe_item_root) View container;
 
