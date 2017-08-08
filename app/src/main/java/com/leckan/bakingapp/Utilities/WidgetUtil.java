@@ -22,7 +22,6 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.Random;
 
 /**
  * Created by Simpa on 8/8/2017.
@@ -30,19 +29,20 @@ import java.util.Random;
 
 public class WidgetUtil extends AsyncTask<Object, Object, Void> {
     Context context;
-    String[] result;
+    ArrayList<Recipe> result;
 
     public WidgetUtil(Context c) {
         context = c;
     }
 
-    public String[] FetchRandomRecipeForWidget() {
+    public ArrayList<Recipe> FetchRecipesForWidget() {
         ConnectivityManager mConMgr = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo networkInfo = mConMgr.getActiveNetworkInfo();
         Resources mResources = context.getResources();
         String result = "";
         String recipeName = "";
         String jsonStr = null;
+        ArrayList<Recipe> dRecipes = new ArrayList<>();
         if (networkInfo != null && networkInfo.isConnected()) {
 
 
@@ -72,8 +72,6 @@ public class WidgetUtil extends AsyncTask<Object, Object, Void> {
         if (jsonStr != null) {
             try {
                 JSONArray jsonArray = new JSONArray(jsonStr);
-
-                ArrayList<Recipe> dRecipes = new ArrayList<>();
                 for (int i = 0; i < jsonArray.length(); i++) {
                     JSONObject c = jsonArray.getJSONObject(i);
                     Recipe aRecipe = new Recipe();
@@ -110,14 +108,14 @@ public class WidgetUtil extends AsyncTask<Object, Object, Void> {
                     dRecipes.add(aRecipe);
 
                 }
-                Random random = new Random();
+               /* Random random = new Random();
 
                 int n = random.nextInt(dRecipes.size());
                 ArrayList<Ingredient> ingredients = dRecipes.get(n).getIngredients();
                 recipeName = dRecipes.get(n).getName();
                 for (Ingredient i : ingredients) {
                     result = result + "\n" + i.getIngredient();
-                }
+                }*/
             } catch (JSONException e) {
                 e.printStackTrace();
             }
@@ -126,12 +124,12 @@ public class WidgetUtil extends AsyncTask<Object, Object, Void> {
             Log.e("Main", "Couldn't get json from server.");
         }
 
-        return new String[]{recipeName, result};
+        return dRecipes ;//new String[]{recipeName, result};
     }
 
     @Override
     protected Void doInBackground(Object... objects) {
-        result = FetchRandomRecipeForWidget();
+        result = FetchRecipesForWidget();
         return null;
     }
 

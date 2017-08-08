@@ -7,8 +7,13 @@ import android.content.Context;
 import android.content.Intent;
 import android.widget.RemoteViews;
 
+import com.leckan.bakingapp.Model.Ingredient;
+import com.leckan.bakingapp.Model.Recipe;
 import com.leckan.bakingapp.UI.MainActivity;
 import com.leckan.bakingapp.Utilities.WidgetUtil;
+
+import java.util.ArrayList;
+import java.util.Random;
 
 /**
  * Implementation of App Widget functionality.
@@ -18,12 +23,12 @@ public class RecipeIngredient extends AppWidgetProvider {
     static void updateAppWidget(Context context, AppWidgetManager appWidgetManager,
                                 int appWidgetId, String recipeName, String ingredients) {
 
-        CharSequence widgetText = recipeName + " Ingredients";
+        CharSequence widgetText = recipeName;
         // Construct the RemoteViews object
         RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.recipe_ingredient);
         views.setTextViewText(R.id.appwidget_text, widgetText);
 
-        CharSequence widgetIngredients = "Ingredients: \n" + ingredients;
+        CharSequence widgetIngredients = "Ingredients: " + ingredients;
         views.setTextViewText(R.id.appwidget_details, widgetIngredients);
 
         Intent intent = new Intent(context, MainActivity.class);
@@ -38,9 +43,18 @@ public class RecipeIngredient extends AppWidgetProvider {
     public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
         // There may be multiple widgets active, so update all of them
 
-     new WidgetUtil(context).execute();
+      ArrayList<Recipe> recipeArrayList= new WidgetUtil(context).FetchRecipesForWidget();
+
         for (int appWidgetId : appWidgetIds) {
-            updateAppWidget(context, appWidgetManager, appWidgetId, "", "");
+            Random random = new Random();
+            int n = random.nextInt(recipeArrayList.size());
+            ArrayList<Ingredient> ingredients = recipeArrayList.get(n).getIngredients();
+            String recipeName = recipeArrayList.get(n).getName();
+            String ingredient = "";
+            for (Ingredient i : ingredients) {
+                ingredient = ingredient  + i.getIngredient() + ",\n"; }
+
+            updateAppWidget(context, appWidgetManager, appWidgetId, recipeName, ingredient);
         }
     }
 
