@@ -34,20 +34,31 @@
 
     </android.support.design.widget.AppBarLayout>
 
+    <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/Recipe_card"
+        android:layout_width="280dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:textAlignment="center"
+        card_view:cardCornerRadius="4dp"
+        card_view:cardElevation="10dp"
+        android:layout_margin="10dp">
+
+        <TextView
+            android:id="@+id/recipe_ingredient"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:elevation="2dp"
+            android:gravity="center"
+            android:text="@string/app_name"
+            android:textAlignment="center"
+            android:textSize="18sp"
+            android:padding="10dp"/>
+    </android.support.v7.widget.CardView>
     <android.support.v4.widget.NestedScrollView
         android:id="@+id/recipe_detail_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layout_behavior="@string/appbar_scrolling_view_behavior" />
-
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/fab"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_vertical|start"
-        android:layout_margin="@dimen/fab_margin"
-        app:layout_anchor="@+id/recipe_detail_container"
-        app:layout_anchorGravity="top|end"
-        app:srcCompat="@android:drawable/stat_notify_chat" />
 
 </android.support.design.widget.CoordinatorLayout>

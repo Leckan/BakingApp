@@ -88,8 +88,12 @@ public class Recipe implements Parcelable {
     public Recipe(Parcel parcel) {
         this.id = parcel.readInt();
         this.name = parcel.readString();
-        this.ingredients = parcel.readArrayList(null);
-        this.steps = parcel.readArrayList(null);
+        this.ingredients = new ArrayList<>();
+        this.steps = new ArrayList<>();
+        parcel.readList(this.ingredients ,getClass().getClassLoader());
+        parcel.readList(this.steps , getClass().getClassLoader());
+       // this.ingredients = parcel.readArrayList(null);
+      //  this.steps = parcel.readArrayList(null);
         this.servings = parcel.readInt();
         this.image = parcel.readString();
     }

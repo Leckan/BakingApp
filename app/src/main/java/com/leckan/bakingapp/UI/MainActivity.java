@@ -15,6 +15,7 @@ import com.leckan.bakingapp.Adapter.RecipeAdapter;
 import com.leckan.bakingapp.Model.Recipe;
 import com.leckan.bakingapp.R;
 import com.leckan.bakingapp.Utilities.DownloadRecipeTask;
+import com.leckan.bakingapp.Utilities.OfflineRecipeTask;
 import com.leckan.bakingapp.Utilities.Utility;
 
 import java.util.ArrayList;
@@ -75,7 +76,7 @@ public class MainActivity extends AppCompatActivity {
 
     }
     private void LoadOfflineRecipes() {
-     //   new FavoriteMoviesTask(MainActivity.this, moviesList).execute();
+       new OfflineRecipeTask(MainActivity.this, recipeList, currentScrollPosition).execute();
     }
 
     public void LoadOnlineRecipes() {

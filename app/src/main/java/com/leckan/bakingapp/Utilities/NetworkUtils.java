@@ -74,4 +74,16 @@ public class NetworkUtils {
 
         return url;
     }
+    public static URL buildImageUrl(String imageAddress) {
+        Uri builtUri = Uri.parse(imageAddress);
+
+        URL url = null;
+        try {
+            url = new URL(builtUri.toString());
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
+
+        return url;
+    }
 }

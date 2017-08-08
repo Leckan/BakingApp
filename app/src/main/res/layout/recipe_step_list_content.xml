@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:card_view="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/recipe_item_root"
+<LinearLayout
+    android:id="@+id/Recipe_steps_container"
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_centerHorizontal="true"
@@ -10,31 +10,25 @@
     android:gravity="center"
     android:orientation="vertical"
     android:padding="0dp">
-
     <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
-        android:id="@+id/card_view"
+        android:id="@+id/Recipe_card_view"
         android:layout_width="280dp"
-        android:layout_height="180dp"
+        android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:textAlignment="center"
         card_view:cardCornerRadius="4dp"
         card_view:cardElevation="10dp"
         android:layout_margin="10dp">
-        <ImageView
-            android:id="@+id/recipe_image"
-            android:layout_width="280dp"
-            android:layout_height="180dp"
-            android:layout_gravity="center"
-            android:scaleType="centerCrop" />
+
         <TextView
-            android:id="@+id/recipe_name"
+            android:id="@+id/recipe_decription"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:elevation="2dp"
             android:gravity="center"
             android:text="@string/app_name"
             android:textAlignment="center"
-            android:textSize="24sp" />
+            android:textSize="18sp"
+            android:padding="10dp"/>
     </android.support.v7.widget.CardView>
-
 </LinearLayout>
