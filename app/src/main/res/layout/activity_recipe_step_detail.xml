@@ -95,11 +95,13 @@
         android:enabled="false"
         android:gravity="center"
         android:text="@string/next_step" />
-
+<!--
     <android.support.v4.widget.NestedScrollView
         android:id="@+id/recipe_detail_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior" />
-    </LinearLayout></ScrollView>
+        app:layout_behavior="@string/appbar_scrolling_view_behavior" />-->
+    </LinearLayout>
+
+    </ScrollView>
 </LinearLayout>
