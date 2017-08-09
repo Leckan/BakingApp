@@ -43,7 +43,7 @@ public class RecipeDetailFragment extends Fragment {
      */
     public static final String ARG_ITEM_ID = "item_id";
     private SimpleExoPlayer mExoPlayer;
-    @BindView(R.id.playerView)
+  //  @BindView(R.id.playerView)
     SimpleExoPlayerView mPlayerView;
     Context context;
 

@@ -131,7 +131,8 @@ public class RecipeDetailActivity extends AppCompatActivity {
             Intent intent = new Intent(this, RecipeStepListActivity.class);
             intent.putExtra("theRecipe",theRecipe);
 
-            NavUtils.navigateUpTo(this, new Intent(this, RecipeStepListActivity.class));
+
+            NavUtils.navigateUpTo(this,intent);
            // finish();
             return true;
         }
