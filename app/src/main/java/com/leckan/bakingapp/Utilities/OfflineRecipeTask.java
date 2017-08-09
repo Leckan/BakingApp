@@ -46,21 +46,6 @@ public class OfflineRecipeTask extends AsyncTask<Object, Object, Void> {
         mResources = context.getResources();
     }
 
-    /* private String readRecipesFromResources() throws IOException, JSONException {
-         StringBuilder builder = new StringBuilder();
-         InputStream in = mResources.openRawResource(R.raw.baking);
-         BufferedReader reader = new BufferedReader(new InputStreamReader(in));
-
-         String line;
-         while ((line = reader.readLine()) != null) {
-             builder.append(line);
-         }
-
-         //Parse resource into key/values
-         final String rawJson = builder.toString();
-
-         return  rawJson;
-     }*/
     @Override
     protected Void doInBackground(Object... voids) {
 
@@ -132,7 +117,6 @@ public class OfflineRecipeTask extends AsyncTask<Object, Object, Void> {
                                 .show();
                     }
                 });
-
             }
         } else {
             Log.e("Main", "Couldn't get json from server.");
@@ -145,9 +129,7 @@ public class OfflineRecipeTask extends AsyncTask<Object, Object, Void> {
                             .show();
                 }
             });
-
         }
-
         return null;
     }
 
@@ -159,7 +141,6 @@ public class OfflineRecipeTask extends AsyncTask<Object, Object, Void> {
         pDialog.setMessage("Please wait...");
         pDialog.setCancelable(false);
         pDialog.show();
-
     }
 
     @Override
@@ -171,7 +152,6 @@ public class OfflineRecipeTask extends AsyncTask<Object, Object, Void> {
         /**
          * Updating parsed JSON data into ListView
          * */
-
         adapter = new RecipeAdapter(dRecipes, mContext);
 
         recipesList.setAdapter(adapter);

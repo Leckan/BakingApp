@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.os.Parcelable;
 import android.os.PersistableBundle;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
@@ -36,6 +37,8 @@ public class MainActivity extends AppCompatActivity {
     private RecipeAdapter adapter;
     ConnectivityManager mConMgr;
 
+    private final String RECIPES_SAVED_STATE = "recipes";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,9 +46,15 @@ public class MainActivity extends AppCompatActivity {
 
         ButterKnife.bind(this);
 
-        if (savedInstanceState != null) {
+
+        if(savedInstanceState != null )
+        {
+            if(savedInstanceState.containsKey(RECIPES_SAVED_STATE))
+            {
+                recipes = savedInstanceState.getParcelableArrayList(RECIPES_SAVED_STATE);
+            }
             if (savedInstanceState.containsKey(CURRENT_SCROLL_POSITION)) {
-                currentScrollPosition = savedInstanceState.getInt(CURRENT_SCROLL_POSITION, 0);
+                currentScrollPosition = savedInstanceState.getInt(CURRENT_SCROLL_POSITION,0);
             }
         }
         mConMgr = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
@@ -91,10 +100,23 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
+        if(savedInstanceState != null )
+        {
+            if(savedInstanceState.containsKey(RECIPES_SAVED_STATE))
+            {
+                recipes = savedInstanceState.getParcelableArrayList(RECIPES_SAVED_STATE);
+            }
+            if (savedInstanceState.containsKey(CURRENT_SCROLL_POSITION)) {
+            currentScrollPosition = savedInstanceState.getInt(CURRENT_SCROLL_POSITION,0);
+            layoutManager.scrollToPosition(currentScrollPosition);
+        }
+        }
     }
 
     @Override
     public void onSaveInstanceState(Bundle outState, PersistableBundle outPersistentState) {
         super.onSaveInstanceState(outState, outPersistentState);
+        outState.putParcelableArrayList(RECIPES_SAVED_STATE, (ArrayList<? extends Parcelable>) recipes);
+        outState.putInt(CURRENT_SCROLL_POSITION, layoutManager.findFirstVisibleItemPosition());
     }
 }

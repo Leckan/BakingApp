@@ -1,6 +1,8 @@
 package com.leckan.bakingapp.UI;
 
 import android.app.Activity;
+import android.content.Context;
+import android.net.Uri;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -9,8 +11,24 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.google.android.exoplayer2.DefaultLoadControl;
+import com.google.android.exoplayer2.ExoPlayerFactory;
+import com.google.android.exoplayer2.LoadControl;
+import com.google.android.exoplayer2.SimpleExoPlayer;
+import com.google.android.exoplayer2.extractor.DefaultExtractorsFactory;
+import com.google.android.exoplayer2.source.ExtractorMediaSource;
+import com.google.android.exoplayer2.source.MediaSource;
+import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
+import com.google.android.exoplayer2.trackselection.TrackSelector;
+import com.google.android.exoplayer2.ui.SimpleExoPlayerView;
+import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
+import com.google.android.exoplayer2.util.Util;
+import com.leckan.bakingapp.Model.Step;
 import com.leckan.bakingapp.R;
 import com.leckan.bakingapp.UI.dummy.DummyContent;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
 /**
  * A fragment representing a single Recipe detail screen.
@@ -24,12 +42,17 @@ public class RecipeDetailFragment extends Fragment {
      * represents.
      */
     public static final String ARG_ITEM_ID = "item_id";
+    private SimpleExoPlayer mExoPlayer;
+    @BindView(R.id.playerView)
+    SimpleExoPlayerView mPlayerView;
+    Context context;
 
     /**
      * The dummy content this fragment is presenting.
      */
     private DummyContent.DummyItem mItem;
 
+    private Step theStep;
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
      * fragment (e.g. upon screen orientation changes).
@@ -53,6 +76,10 @@ public class RecipeDetailFragment extends Fragment {
              //   appBarLayout.setTitle(mItem.content);
             }
         }
+        if(getArguments().containsKey("theStep"))
+        {
+            theStep = getArguments().getParcelable("theStep");
+        }
     }
 
     @Override
@@ -64,7 +91,50 @@ public class RecipeDetailFragment extends Fragment {
         if (mItem != null) {
             ((TextView) rootView.findViewById(R.id.recipe_detail)).setText(mItem.details);
         }
+context= inflater.getContext();
 
+        if(theStep!=null && !theStep.getVideoURL().isEmpty()) {
+         //   initializePlayer(Uri.parse(theStep.getVideoURL()));
+        }
+        else if(theStep!=null && !theStep.getThumbnailURL().isEmpty())
+        {
+       //     initializePlayer(Uri.parse(theStep.getThumbnailURL()));
+        }
         return rootView;
+    }
+
+    private void initializePlayer(Uri mediaUri) {
+        if (mExoPlayer == null) {
+            // Create an instance of the ExoPlayer.
+            TrackSelector trackSelector = new DefaultTrackSelector();
+            LoadControl loadControl = new DefaultLoadControl();
+            mExoPlayer = ExoPlayerFactory.newSimpleInstance(context, trackSelector, loadControl);
+            mPlayerView.setPlayer(mExoPlayer);
+
+            // TODO (2): Set the ExoPlayer.EventListener to this activity
+
+
+            String userAgent = Util.getUserAgent(context, context.getApplicationInfo().name); //"bakingapp");
+            MediaSource mediaSource = new ExtractorMediaSource(mediaUri, new DefaultDataSourceFactory(
+                    context, userAgent), new DefaultExtractorsFactory(), null, null);
+            mExoPlayer.prepare(mediaSource);
+            mExoPlayer.setPlayWhenReady(true);
+        }
+    }
+    /**
+     * Release ExoPlayer.
+     */
+    private void releasePlayer() {
+        mExoPlayer.stop();
+        mExoPlayer.release();
+        mExoPlayer = null;
+    }
+    /**
+     * Release the player when the activity is destroyed.
+     */
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        releasePlayer();
     }
 }

@@ -28,7 +28,7 @@ public class RecipeIngredient extends AppWidgetProvider {
         RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.recipe_ingredient);
         views.setTextViewText(R.id.appwidget_text, widgetText);
 
-        CharSequence widgetIngredients = "Ingredients: " + ingredients;
+        CharSequence widgetIngredients = ingredients;
         views.setTextViewText(R.id.appwidget_details, widgetIngredients);
 
         Intent intent = new Intent(context, MainActivity.class);
@@ -49,10 +49,13 @@ public class RecipeIngredient extends AppWidgetProvider {
             Random random = new Random();
             int n = random.nextInt(recipeArrayList.size());
             ArrayList<Ingredient> ingredients = recipeArrayList.get(n).getIngredients();
-            String recipeName = recipeArrayList.get(n).getName();
-            String ingredient = "";
+
+            String ingredient = "Ingredients: ";
             for (Ingredient i : ingredients) {
-                ingredient = ingredient  + i.getIngredient() + ",\n"; }
+                ingredient = ingredient  + i.getIngredient() + ", "; }
+            ingredient = ingredient.substring(0,ingredient.length() - 3) + ".";
+
+            String recipeName = recipeArrayList.get(n).getName();
 
             updateAppWidget(context, appWidgetManager, appWidgetId, recipeName, ingredient);
         }

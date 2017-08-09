@@ -42,6 +42,12 @@
                 android:name="android.appwidget.provider"
                 android:resource="@xml/recipe_ingredient_info" />
         </receiver>
+
+        <activity
+            android:name=".UI.ExoFullscreenActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:label="@string/title_activity_exo_fullscreen"
+            android:theme="@style/FullscreenTheme"></activity>
     </application>
 
 </manifest>

@@ -81,14 +81,11 @@ public class RecipeStepsAdapter extends RecyclerView.Adapter<RecipeStepsAdapter.
 
             int clickedPosition = getAdapterPosition();
             Step selectedStep = stepList.get(clickedPosition);
-          //  Intent intent = new Intent(inflater.getContext(), RecipeStepListActivity.class);
-        //    intent.putExtra("theRecipe",selectedRecipe);
-          //  inflater.getContext().startActivity(intent);
-
 
             if (mTwoPane) {
                 Bundle arguments = new Bundle();
                 RecipeDetailFragment fragment = new RecipeDetailFragment();
+                arguments.putParcelable("theStep",selectedStep);
                 fragment.setArguments(arguments);
                 myContext.getSupportFragmentManager().beginTransaction()
                         .replace(R.id.recipe_detail_container, fragment)
@@ -98,6 +95,7 @@ public class RecipeStepsAdapter extends RecyclerView.Adapter<RecipeStepsAdapter.
                 Intent intent = new Intent(context, RecipeDetailActivity.class);
                // intent.putExtra(RecipeDetailFragment.ARG_ITEM_ID, holder.mItem.id);
 
+                intent.putExtra("theStep",selectedStep);
                 context.startActivity(intent);
             }
         }

@@ -2,6 +2,7 @@ package com.leckan.bakingapp.UI;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.PersistableBundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.ActionBar;
@@ -10,11 +11,14 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.TextView;
 
 import com.leckan.bakingapp.Adapter.RecipeStepsAdapter;
+import com.leckan.bakingapp.Model.Ingredient;
 import com.leckan.bakingapp.Model.Recipe;
 import com.leckan.bakingapp.R;
 
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 /**
@@ -34,8 +38,11 @@ public class RecipeStepListActivity extends AppCompatActivity {
     private boolean mTwoPane;
     private Recipe theRecipe;
     private final String CURRENT_SCROLL = "currentScroll";
+    private final String RECIPE_SAVED_STATE = "recipe";
     private int currentScrollPosition = 0;
 
+    @BindView(R.id.recipe_ingredient)
+    TextView ingredientView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,20 +51,34 @@ public class RecipeStepListActivity extends AppCompatActivity {
 
 
         if (savedInstanceState != null) {
-            if (savedInstanceState.containsKey(CURRENT_SCROLL)) {
-                currentScrollPosition = savedInstanceState.getInt(CURRENT_SCROLL, 0);
+            if (savedInstanceState.containsKey(RECIPE_SAVED_STATE)) {
+                theRecipe = savedInstanceState.getParcelable(RECIPE_SAVED_STATE);
             }
+            if (savedInstanceState.containsKey(CURRENT_SCROLL)) {
+                currentScrollPosition = savedInstanceState.getInt(CURRENT_SCROLL,0);
+            }
+
         }
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         toolbar.setTitle(getTitle());
 
-        theRecipe =   getIntent().getParcelableExtra("theRecipe");
+        if(theRecipe == null) {
+            theRecipe = getIntent().getParcelableExtra("theRecipe");
+        }
         ButterKnife.bind(this);
 
         View recyclerView = findViewById(R.id.recipe_list);
         assert recyclerView != null;
 
+        String ingredient = "Ingredients: ";
+        if(theRecipe != null) {
+            for (Ingredient i : theRecipe.getIngredients()) {
+                ingredient = ingredient + i.getIngredient() + ", ";
+            }
+            ingredient = ingredient.substring(0, ingredient.length() - 3) + ".";
+        }
+        ingredientView.setText(ingredient);
         if (findViewById(R.id.recipe_detail_container) != null) {
             // The detail container view will be present only in the
             // large-screen layouts (res/values-w900dp).
@@ -78,86 +99,35 @@ public class RecipeStepListActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         if (id == android.R.id.home) {
-            // This ID represents the Home or Up button. In the case of this
-            // activity, the Up button is shown. Use NavUtils to allow users
-            // to navigate up one level in the application structure. For
-            // more details, see the Navigation pattern on Android Design:
-            //
-            // http://developer.android.com/design/patterns/navigation.html#up-vs-back
-            //
             NavUtils.navigateUpTo(this, new Intent(this, MainActivity.class));
             return true;
         }
         return super.onOptionsItemSelected(item);
     }
 
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        if (savedInstanceState != null) {
+            if (savedInstanceState.containsKey(RECIPE_SAVED_STATE)) {
+                theRecipe = savedInstanceState.getParcelable(RECIPE_SAVED_STATE);
+            }
+            if (savedInstanceState.containsKey(CURRENT_SCROLL)) {
+                currentScrollPosition = savedInstanceState.getInt(CURRENT_SCROLL,0);
+            }
 
+        }
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState, PersistableBundle outPersistentState) {
+        super.onSaveInstanceState(outState, outPersistentState);
+        outState.putParcelable(RECIPE_SAVED_STATE,theRecipe);
+    }
     private void setupRecyclerView(@NonNull RecyclerView recyclerView) {
-        recyclerView.setAdapter(new RecipeStepsAdapter(theRecipe.getSteps(), mTwoPane, this));
-    }
-/*
-    public class SimpleItemRecyclerViewAdapter
-            extends RecyclerView.Adapter<SimpleItemRecyclerViewAdapter.ViewHolder> {
-
-        private final List<DummyContent.DummyItem> mValues;
-
-        public SimpleItemRecyclerViewAdapter(List<DummyContent.DummyItem> items) {
-            mValues = items;
-        }
-
-        @Override
-        public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-            View view = LayoutInflater.from(parent.getContext())
-                    .inflate(R.layout.recipe_step_list_content, parent, false);
-            return new ViewHolder(view);
-        }
-
-        @Override
-        public void onBindViewHolder(final ViewHolder holder, int position) {
-            holder.mItem = mValues.get(position);
-
-            holder.mView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (mTwoPane) {
-                        Bundle arguments = new Bundle();
-                        arguments.putString(RecipeDetailFragment.ARG_ITEM_ID, holder.mItem.id);
-                        RecipeDetailFragment fragment = new RecipeDetailFragment();
-                        fragment.setArguments(arguments);
-                        getSupportFragmentManager().beginTransaction()
-                                .replace(R.id.recipe_detail_container, fragment)
-                                .commit();
-                    } else {
-                        Context context = v.getContext();
-                        Intent intent = new Intent(context, RecipeDetailActivity.class);
-                        intent.putExtra(RecipeDetailFragment.ARG_ITEM_ID, holder.mItem.id);
-
-                        context.startActivity(intent);
-                    }
-                }
-            });
-        }
-
-        @Override
-        public int getItemCount() {
-            return mValues.size();
-        }
-
-        public class ViewHolder extends RecyclerView.ViewHolder {
-            public final View mView;
-            public DummyContent.DummyItem mItem;
-
-            public ViewHolder(View view) {
-                super(view);
-                mView = view;
-            }
-
-            @Override
-            public String toString() {
-                return super.toString() ;//+ " '" + mContentView.getText() + "'";
-            }
+        if(theRecipe != null) {
+            recyclerView.setAdapter(new RecipeStepsAdapter(theRecipe.getSteps(), mTwoPane, this));
         }
     }
 
-    */
 }
