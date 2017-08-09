@@ -111,8 +111,6 @@ context= inflater.getContext();
             mExoPlayer = ExoPlayerFactory.newSimpleInstance(context, trackSelector, loadControl);
             mPlayerView.setPlayer(mExoPlayer);
 
-            // TODO (2): Set the ExoPlayer.EventListener to this activity
-
 
             String userAgent = Util.getUserAgent(context, context.getApplicationInfo().name); //"bakingapp");
             MediaSource mediaSource = new ExtractorMediaSource(mediaUri, new DefaultDataSourceFactory(
