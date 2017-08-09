@@ -126,7 +126,7 @@ public class RecipeStepListActivity extends AppCompatActivity {
     }
     private void setupRecyclerView(@NonNull RecyclerView recyclerView) {
         if(theRecipe != null) {
-            recyclerView.setAdapter(new RecipeStepsAdapter(theRecipe.getSteps(), mTwoPane, this));
+            recyclerView.setAdapter(new RecipeStepsAdapter(theRecipe.getSteps(),theRecipe, mTwoPane, this));
         }
     }
 

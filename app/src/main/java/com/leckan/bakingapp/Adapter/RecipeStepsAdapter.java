@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.leckan.bakingapp.Model.Recipe;
 import com.leckan.bakingapp.Model.Step;
 import com.leckan.bakingapp.R;
 import com.leckan.bakingapp.UI.RecipeDetailActivity;
@@ -31,14 +32,16 @@ public class RecipeStepsAdapter extends RecyclerView.Adapter<RecipeStepsAdapter.
     private static int viewHolderCount;
     public List<Step> stepList;
     LayoutInflater inflater;
+    public Recipe theRecipe;
     private boolean mTwoPane;
     private FragmentActivity myContext;
 
 
-    public RecipeStepsAdapter(List<Step> steps, boolean twoPane, Context c) {
+    public RecipeStepsAdapter(List<Step> steps,Recipe recipe, boolean twoPane, Context c) {
         this.inflater = LayoutInflater.from(c);
         this.stepList = steps;
         mTwoPane = twoPane;
+        theRecipe = recipe;
         myContext = (FragmentActivity) c;
     }
     @Override
@@ -96,6 +99,7 @@ public class RecipeStepsAdapter extends RecyclerView.Adapter<RecipeStepsAdapter.
                // intent.putExtra(RecipeDetailFragment.ARG_ITEM_ID, holder.mItem.id);
 
                 intent.putExtra("theStep",selectedStep);
+                intent.putExtra("theRecipe",theRecipe);
                 context.startActivity(intent);
             }
         }

@@ -24,6 +24,7 @@ import com.google.android.exoplayer2.trackselection.TrackSelector;
 import com.google.android.exoplayer2.ui.SimpleExoPlayerView;
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
 import com.google.android.exoplayer2.util.Util;
+import com.leckan.bakingapp.Model.Recipe;
 import com.leckan.bakingapp.Model.Step;
 import com.leckan.bakingapp.R;
 
@@ -42,6 +43,7 @@ public class RecipeDetailActivity extends AppCompatActivity {
 
     private SimpleExoPlayer mExoPlayer;
 
+    private Recipe theRecipe;
     private Step theStep;
     @BindView(R.id.playerView)
     SimpleExoPlayerView mPlayerView;
@@ -75,11 +77,11 @@ public class RecipeDetailActivity extends AppCompatActivity {
         // For more information, see the Fragments API guide at:
         //
         // http://developer.android.com/guide/components/fragments.html
-        //if (savedInstanceState != null) {
-        if (savedInstanceState.containsKey(STEP_SAVED_STATE)) {
-            theStep = savedInstanceState.getParcelable(STEP_SAVED_STATE);
+        if (savedInstanceState != null) {
+            if (savedInstanceState.containsKey(STEP_SAVED_STATE)) {
+                theStep = savedInstanceState.getParcelable(STEP_SAVED_STATE);
+            }
         }
-
             // Create the detail fragment and add it to the activity
             // using a fragment transaction.
 
@@ -87,6 +89,7 @@ public class RecipeDetailActivity extends AppCompatActivity {
             arguments.putString(RecipeDetailFragment.ARG_ITEM_ID,
                     getIntent().getStringExtra(RecipeDetailFragment.ARG_ITEM_ID));
             arguments.putParcelable("theStep",getIntent().getParcelableExtra("theStep"));
+        arguments.putParcelable("theRecipe",getIntent().getParcelableExtra("theRecipe"));
             RecipeDetailFragment fragment = new RecipeDetailFragment();
             fragment.setArguments(arguments);
             getSupportFragmentManager().beginTransaction()
@@ -94,6 +97,11 @@ public class RecipeDetailActivity extends AppCompatActivity {
                     .commit();
         mPlayerView.setDefaultArtwork(BitmapFactory.decodeResource
                 (getResources(), R.drawable.no_video));
+
+        if(theRecipe ==null)
+        {
+            theRecipe = getIntent().getParcelableExtra("theRecipe");
+        }
 
         if(theStep == null){
         theStep = getIntent().getParcelableExtra("theStep");}
@@ -120,6 +128,9 @@ public class RecipeDetailActivity extends AppCompatActivity {
             //
             // http://developer.android.com/design/patterns/navigation.html#up-vs-back
             //
+            Intent intent = new Intent(this, RecipeStepListActivity.class);
+            intent.putExtra("theRecipe",theRecipe);
+
             NavUtils.navigateUpTo(this, new Intent(this, RecipeStepListActivity.class));
            // finish();
             return true;
