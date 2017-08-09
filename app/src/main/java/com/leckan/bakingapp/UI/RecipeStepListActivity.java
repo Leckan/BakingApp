@@ -65,6 +65,7 @@ public class RecipeStepListActivity extends AppCompatActivity {
         if(theRecipe == null) {
             theRecipe = getIntent().getParcelableExtra("theRecipe");
         }
+        setTitle(theRecipe.getName());
         toolbar.setTitle(theRecipe.getName());
 
         ButterKnife.bind(this);
