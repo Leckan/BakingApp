@@ -61,11 +61,12 @@ public class RecipeStepListActivity extends AppCompatActivity {
         }
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        toolbar.setTitle(getTitle());
 
         if(theRecipe == null) {
             theRecipe = getIntent().getParcelableExtra("theRecipe");
         }
+        toolbar.setTitle(theRecipe.getName());
+
         ButterKnife.bind(this);
 
         View recyclerView = findViewById(R.id.recipe_list);
