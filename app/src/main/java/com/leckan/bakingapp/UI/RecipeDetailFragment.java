@@ -123,16 +123,13 @@ context= inflater.getContext();
      * Release ExoPlayer.
      */
     private void releasePlayer() {
+        if(mExoPlayer != null){
         mExoPlayer.stop();
         mExoPlayer.release();
-        mExoPlayer = null;
+        mExoPlayer = null;}
     }
     /**
      * Release the player when the activity is destroyed.
      */
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        releasePlayer();
-    }
+
 }
